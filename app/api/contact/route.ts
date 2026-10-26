@@ -4,6 +4,14 @@ import path from 'path';
 
 const MESSAGES_FILE = path.join(process.cwd(), 'data', 'messages.json');
 
+function isAuthorized(req: NextRequest): boolean {
+  const adminSecret = process.env.ADMIN_INBOX_PASSCODE || 'amay2026';
+  const headerSecret =
+    req.headers.get('x-admin-passcode') ||
+    req.headers.get('authorization')?.replace('Bearer ', '');
+  return Boolean(headerSecret && headerSecret.trim() === adminSecret.trim());
+}
+
 function getStoredMessages() {
   try {
     if (!fs.existsSync(MESSAGES_FILE)) {
@@ -26,7 +34,14 @@ function saveStoredMessages(messages: any[]) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!isAuthorized(req)) {
+    return NextResponse.json(
+      { error: 'Unauthorized: Private inbox is restricted to the portfolio owner.' },
+      { status: 401 }
+    );
+  }
+
   try {
     const messages = getStoredMessages();
     return NextResponse.json({
@@ -86,7 +101,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Thank you! Your message has been saved to Amay\'s inbox and transmitted successfully.',
+      message: 'Thank you! Your message has been sent directly to Amay. He has received your transmission and will review it promptly.',
       storedMessageId: newMessage.id,
     });
   } catch (error) {
@@ -99,6 +114,13 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  if (!isAuthorized(req)) {
+    return NextResponse.json(
+      { error: 'Unauthorized: Private inbox is restricted to the portfolio owner.' },
+      { status: 401 }
+    );
+  }
+
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');

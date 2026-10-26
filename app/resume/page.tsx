@@ -38,9 +38,9 @@ export default function ResumePage() {
             href={resumePath}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-mono text-textMain bg-card border border-borderSubtle hover:border-sage transition-colors"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-zinc-700 hover:border-sage shadow-md transition-all"
           >
-            <ExternalLink className="w-3.5 h-3.5 text-sage" />
+            <ExternalLink className="w-3.5 h-3.5 text-sage-light" />
             <span>Full Tab</span>
           </a>
         </div>

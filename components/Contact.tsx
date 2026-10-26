@@ -16,7 +16,7 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
-  Inbox,
+  ShieldCheck,
   ExternalLink,
 } from 'lucide-react';
 import ResumeModal from './ResumeModal';
@@ -85,7 +85,7 @@ export default function Contact() {
 
       setFormStatus('success');
       setFormFeedback(
-        'Thank you! Your message has been saved to Amay\'s inbox. You can view all received messages in /inbox.'
+        'Thank you! Your message has been sent directly to Amay. He has received your inquiry and will review it promptly.'
       );
       setForm({ name: '', email: '', company: '', message: '', honeypot: '' });
     } catch (err: any) {
@@ -264,17 +264,9 @@ export default function Contact() {
 
                   {/* Status Feedback */}
                   {formStatus === 'success' && (
-                    <div className="p-4 rounded-xl bg-sage/10 border border-sage/30 flex items-start justify-between gap-3 text-xs text-sage font-medium">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 shrink-0" />
-                        <span>{formFeedback}</span>
-                      </div>
-                      <Link
-                        href="/inbox"
-                        className="underline hover:text-textMain font-mono shrink-0 font-semibold"
-                      >
-                        Open Inbox →
-                      </Link>
+                    <div className="p-4 rounded-xl bg-sage/10 border border-sage/30 flex items-center gap-2.5 text-xs text-sage font-medium">
+                      <CheckCircle2 className="w-4 h-4 shrink-0" />
+                      <span>{formFeedback}</span>
                     </div>
                   )}
 
@@ -319,21 +311,12 @@ export default function Contact() {
                   </div>
                 </form>
 
-                {/* Where do messages go banner */}
-                <div className="mt-6 p-4 rounded-2xl bg-cardSubtle/70 border border-borderSubtle flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-textMuted">
-                  <div className="flex items-center gap-2">
-                    <Inbox className="w-4 h-4 text-sage shrink-0" />
-                    <span>
-                      Messages submitted here are saved to your secure portfolio inbox.
-                    </span>
-                  </div>
-                  <Link
-                    href="/inbox"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-card border border-borderSubtle text-xs font-mono text-textMain hover:border-sage hover:text-sage transition-colors self-start sm:self-auto shrink-0"
-                  >
-                    <span>View Inbox (/inbox)</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </Link>
+                {/* Confidentiality & Direct Delivery Guarantee */}
+                <div className="mt-6 p-4 rounded-2xl bg-cardSubtle/70 border border-borderSubtle flex items-center gap-3 text-xs text-textMuted">
+                  <ShieldCheck className="w-4 h-4 text-sage shrink-0" />
+                  <span>
+                    Your contact information and message are transmitted directly to Amay Mishra with strict confidentiality.
+                  </span>
                 </div>
               </div>
             </div>
