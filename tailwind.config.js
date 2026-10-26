@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ['class'],
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,48 +11,42 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: '#07090e',
-        foreground: '#e6edf3',
-        surface: {
-          50: '#151b27',
-          100: '#10141e',
-          200: '#0c0e16',
-          300: '#080a0f',
-          border: 'rgba(255, 255, 255, 0.08)',
-          'border-active': 'rgba(16, 185, 129, 0.35)',
+        page: 'rgb(var(--bg-page-rgb) / <alpha-value>)',
+        card: 'rgb(var(--bg-card-rgb) / <alpha-value>)',
+        cardSubtle: 'rgb(var(--bg-card-subtle-rgb) / <alpha-value>)',
+        textMain: 'rgb(var(--text-main-rgb) / <alpha-value>)',
+        textMuted: 'rgb(var(--text-muted-rgb) / <alpha-value>)',
+        borderSubtle: 'rgb(var(--border-subtle-rgb) / <alpha-value>)',
+        borderHover: 'rgb(var(--border-hover-rgb) / <alpha-value>)',
+        sage: {
+          DEFAULT: 'rgb(var(--accent-sage-rgb) / <alpha-value>)',
+          light: 'rgb(var(--accent-sage-light-rgb) / <alpha-value>)',
+          hover: 'rgb(var(--accent-sage-hover-rgb) / <alpha-value>)',
+          soft: 'var(--accent-sage-soft)',
         },
-        primary: {
-          DEFAULT: '#10b981',
-          foreground: '#04100c',
-          hover: '#059669',
-          glow: 'rgba(16, 185, 129, 0.25)',
+        terracotta: {
+          DEFAULT: '#C97B63',
+          hover: '#B86B54',
+          darkHover: '#D6876E',
+          soft: 'var(--accent-terracotta-soft)',
         },
-        cyanAccent: {
-          DEFAULT: '#06b6d4',
-          glow: 'rgba(6, 182, 212, 0.25)',
-        },
-        muted: {
-          DEFAULT: '#1a202c',
-          foreground: '#8b949e',
-        }
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Fraunces', 'Cormorant Garamond', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        mono: ['var(--font-mono)', 'JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
       },
-      keyframes: {
-        pulseSlow: {
-          '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
-          '50%': { opacity: '0.7', transform: 'scale(1.05)' },
-        },
-        scanline: {
-          '0%': { transform: 'translateY(-100%)' },
-          '100%': { transform: 'translateY(100%)' },
-        },
+      maxWidth: {
+        content: '1100px',
       },
-      animation: {
-        'pulse-slow': 'pulseSlow 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'scanline': 'scanline 8s linear infinite',
+      boxShadow: {
+        soft: '0 4px 20px -2px rgba(26, 68, 102, 0.06)',
+        'soft-dark': '0 4px 24px -2px rgba(0, 0, 0, 0.35)',
+        'glow-sage': '0 0 24px -4px rgba(42, 126, 168, 0.25)',
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.5rem',
       },
     },
   },

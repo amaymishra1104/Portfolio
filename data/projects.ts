@@ -291,6 +291,94 @@ print(f"PR-AUC Score: {roc_auc_score(y_test, y_prob):.4f}")`
     lessons: [
       'In edge deployments, memory bandwidth is almost always the real bottleneck before compute capability; frame skipping and resolution downscaling were essential.'
     ]
+  },
+  {
+    slug: 'careerpilot',
+    name: 'CareerPilot.ai',
+    tagline: 'Autonomous Career Copilot & Governed Job Application Platform',
+    category: 'AI / AGENTS',
+    status: 'PRODUCTION',
+    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Gemini AI', 'Remotive API', 'Vitest', 'Node.js'],
+    featured: true,
+    github: 'https://github.com/amaymishra1104/CareerPilot.ai',
+    summary: 'An autonomous career copilot and governed outbound job application platform featuring live job discovery, multi-profile resume management, deterministic match scoring, factual tailoring, and a strict human-approval gated Gmail draft engine.',
+    problem: 'Job seekers face high friction tracking applications and tailoring resumes, while untrusted autonomous agents risk hallucinating credentials, spraying low-quality emails, or sending unauthorized outreach without candidate oversight.',
+    solution: 'Constructed an end-to-end governed application pipeline combining live job feed ingestion (Remotive API), zero-hallucination factual tailoring, transparent match confidence scoring, and an ironclad Human Approval Gate (HTTP 403 strict) before drafting personalized outreach in Gmail.',
+    architecture: [
+      { id: 'discovery', name: 'Job & Lead Discovery', role: 'Ingestion Engine', tech: 'Remotive API / Node.js', details: 'Ingests verified live tech roles with case-insensitive whitespace deduplication and company signal detection' },
+      { id: 'matching', name: 'Transparent Match Engine', role: 'Confidence Scorer', tech: 'TypeScript / Algorithmic Rubric', details: 'Computes transparent 0–100 match confidence based on source authority, skill overlap, and recency' },
+      { id: 'tailor', name: 'Zero-Hallucination Tailor', role: 'Resume Adapter', tech: 'Gemini AI / Structured Schemas', details: 'Re-orders verified experience and highlights matching skills without ever fabricating qualifications' },
+      { id: 'gate', name: 'Human Approval Gate', role: 'Strict 403 Boundary', tech: 'Next.js API Route Guards', details: 'Halts outbound pipeline until explicit human operator sign-off; blocks automated email generation' },
+      { id: 'outreach', name: 'Drafts-Only Outreach', role: 'Outbox Manager', tech: 'Gmail API (users.drafts.create)', details: 'Creates multi-day sequence drafts restricted to test operator inbox with zero autonomous sending' }
+    ],
+    engineeringHighlights: [
+      { title: 'Strict HTTP 403 Human Gate', description: 'API routes unconditionally reject draft synthesis or sequence progression with HTTP 403 unless the lead status is explicitly set to APPROVED.' },
+      { title: 'Zero-Hallucination Factual Tailoring', description: 'Enforces strict constraint checking so AI never invents degrees, skills, or metrics not present in the candidate verified profile.' },
+      { title: 'Drafts-Only Gmail Integration', description: 'Restricted strictly to users.drafts.create with zero auto-send capabilities and recipient safety boundaries.' }
+    ],
+    codeSnippet: {
+      title: 'Human Approval Gate & Draft Guard',
+      language: 'typescript',
+      code: `// Enforce strict Human Approval Gate before draft synthesis
+export async function POST(req: NextRequest) {
+  const { leadId, sequenceType } = await req.json();
+  const lead = await db.leads.findById(leadId);
+
+  // 1. Strict Server Boundary: Reject unapproved leads
+  if (!lead || lead.approvalStatus !== 'APPROVED') {
+    return NextResponse.json(
+      { error: 'Forbidden: Lead requires human approval prior to draft creation.' },
+      { status: 403 }
+    );
+  }
+
+  // 2. Synthesize factual, grounded draft
+  const draft = await generateGroundedDraft({
+    profile: lead.candidateProfile,
+    job: lead.jobSpec,
+    evidenceIds: lead.verifiedEvidence
+  });
+
+  // 3. Save to Gmail Drafts ONLY (no send API invocation)
+  const gmailReceipt = await gmailClient.users.drafts.create({
+    userId: 'me',
+    requestBody: { message: { raw: encodeEmail(draft) } }
+  });
+
+  return NextResponse.json({ success: true, draftId: gmailReceipt.data.id });
+}`
+    },
+    lessons: [
+      'Autonomous systems for career operations must enforce a hard human-in-the-loop gate—unsupervised generation damages professional credibility.',
+      'Deterministic algorithmic scoring provides far more reliable filtering than open-ended LLM qualitative ratings.'
+    ]
+  },
+  {
+    slug: 'agenthub',
+    name: 'AgentHub',
+    tagline: 'Custom Agent Creation & Retrieval-Augmented Generation Platform',
+    category: 'AI / AGENTS',
+    status: 'PRODUCTION',
+    technologies: ['Next.js', 'React', 'TypeScript', 'Supabase', 'pgvector', 'Groq', 'HuggingFace', 'Tailwind CSS'],
+    featured: true,
+    github: 'https://github.com/amaymishra1104/agenthub-ai',
+    demo: 'https://agenthub-ai-ujxo.onrender.com/',
+    summary: 'A full-stack AI platform enabling users to create, configure, and deploy custom conversational AI agents with their own instruction sets and vectorized knowledge bases.',
+    problem: 'Enterprises and developers struggle to ground AI assistants in custom private documents without leaking sensitive data across tenant boundaries or incurring high inference latencies.',
+    solution: 'Engineered an end-to-end multi-tenant RAG architecture using Supabase Row-Level Security, pgvector cosine distance search, HuggingFace embeddings, and low-latency Groq LPU inference.',
+    architecture: [
+      { id: 'client', name: 'Next.js App Interface', role: 'Frontend Client', tech: 'Next.js 14 / TypeScript', details: 'Responsive dashboard for agent management and streaming conversations' },
+      { id: 'auth', name: 'Supabase Auth & RLS', role: 'Security Boundary', tech: 'Supabase / PostgreSQL RLS', details: 'Guarantees strict tenant isolation across custom documents and agent prompts' },
+      { id: 'rag', name: 'Vector Search Engine', role: 'Document Index', tech: 'pgvector / HuggingFace', details: 'Performs semantic vector search with cosine distance indexing' },
+      { id: 'groq', name: 'Groq Inference Stream', role: 'Model Provider', tech: 'Groq API / Llama 3', details: 'Streams grounded responses with sub-450ms time-to-first-token' }
+    ],
+    engineeringHighlights: [
+      { title: 'Sub-450ms Groq Inference', description: 'Streamlined streaming API routes to deliver low-latency grounded reasoning on Groq LPUs.' },
+      { title: 'Per-User Row-Level Security', description: 'Implemented PostgreSQL RLS policies ensuring users cannot access or query embeddings belonging to other accounts.' }
+    ],
+    lessons: [
+      'Row-level security in PostgreSQL eliminates an entire class of authorization vulnerabilities in multi-tenant RAG architectures.'
+    ]
   }
 ];
 

@@ -1,40 +1,45 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/navigation/Navbar';
-import Footer from '@/components/navigation/Footer';
-import AIAssistantModal from '@/components/ai-assistant/AIAssistantModal';
-import TerminalModal from '@/components/terminal/TerminalModal';
-import CustomCursor from '@/components/animations/CustomCursor';
+import { ThemeProvider } from '@/lib/theme';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  display: 'swap',
+});
 
 const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap',
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  variable: '--font-jetbrains-mono',
+  variable: '--font-mono',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Amay Mishra | AI/ML Engineer · Full-Stack Developer · AI Agent Builder',
+  title: 'Amay Mishra | AI/ML Engineer · Software Engineer · RAG & Agentic AI Builder',
   description:
-    'Interactive personal portfolio and engineering lab of Amay Mishra. Building production-grade AI agents, high-concurrency backend systems, RAG pipelines, and full-stack software products.',
+    'Portfolio of Amay Mishra. Final-year B.Tech CSIT student focused on end-to-end AI engineering, building retrieval-augmented and agentic AI systems from backend API design through model integration, evaluation and deployment.',
   keywords: [
     'Amay Mishra',
     'AI Engineer',
     'ML Engineer',
-    'Full-Stack Developer',
-    'AI Agent Builder',
-    'FastAPI',
-    'Next.js',
-    'Python',
+    'Software Engineer',
+    'Agentic AI',
     'RAG',
-    'Computer Vision',
-    'Indore'
+    'LangGraph',
+    'Next.js',
+    'FastAPI',
+    'Python',
+    'pgvector',
+    'Bengaluru',
   ],
   authors: [{ name: 'Amay Mishra', url: 'https://github.com/amaymishra1104' }],
   creator: 'Amay Mishra',
@@ -43,16 +48,19 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://amaymishra.dev',
-    title: 'Amay Mishra | AI/ML Engineer · Full-Stack Developer · AI Agent Builder',
+    title: 'Amay Mishra | AI/ML Engineer · Software Engineer · RAG & Agentic AI Builder',
     description:
-      'Explore production systems, interactive engineering labs, live GitHub metrics, and the AMAY AI assistant.',
-    siteName: 'Amay Mishra Portfolio OS',
+      'Explore production AI systems, agentic architectures, RAG pipelines, and full-stack software built by Amay Mishra.',
+    siteName: 'Amay Mishra Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Amay Mishra | AI/ML Engineer · Full-Stack Developer',
-    description: 'Building intelligent systems that actually ship.',
-    creator: '@amaymishra1104',
+    title: 'Amay Mishra | AI/ML Engineer · Software Engineer',
+    description:
+      'Building retrieval-augmented and agentic AI systems from backend API design through model integration, evaluation and deployment.',
+  },
+  icons: {
+    icon: '/icon.svg',
   },
   robots: {
     index: true,
@@ -69,45 +77,79 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Amay Mishra',
-    jobTitle: 'AI/ML Engineer & Full-Stack Developer',
+    jobTitle: 'AI/ML Engineer & Software Engineer',
     url: 'https://amaymishra.dev',
-    sameAs: ['https://github.com/amaymishra1104'],
+    email: 'amaymishra1104@gmail.com',
+    sameAs: [
+      'https://github.com/amaymishra1104',
+      'https://linkedin.com/in/amay-mishra-419766331',
+      'https://kaggle.com/amaymishra11',
+    ],
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Indore',
-      addressRegion: 'Madhya Pradesh',
+      addressLocality: 'Bengaluru',
+      addressRegion: 'Karnataka',
       addressCountry: 'India',
     },
     alumniOf: {
       '@type': 'CollegeOrUniversity',
-      name: 'Acropolis Institute of Technology and Research (RGPV)',
+      name: 'Acropolis Institute of Technology and Research',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Bhopal',
+        addressCountry: 'India',
+      },
     },
     knowsAbout: [
       'Artificial Intelligence',
-      'Autonomous Agents',
+      'Agentic AI',
+      'Retrieval-Augmented Generation (RAG)',
       'Machine Learning',
+      'Large Language Models (LLMs)',
       'FastAPI',
       'Next.js',
-      'Computer Vision',
-      'RAG',
+      'Node.js',
+      'pgvector',
+      'Python',
+      'TypeScript',
     ],
   };
 
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var stored = localStorage.getItem('theme');
+                  var isDark = stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-background text-foreground font-sans antialiased min-h-screen flex flex-col selection:bg-primary/20 selection:text-primary">
-        <CustomCursor />
-        <Navbar />
-        <main className="flex-1 w-full">{children}</main>
-        <Footer />
-        <AIAssistantModal />
-        <TerminalModal />
+      <body className="min-h-screen font-sans bg-page text-textMain antialiased flex flex-col selection:bg-sage/20 selection:text-textMain">
+        <ThemeProvider>
+          <Navbar />
+          <main className="flex-1 w-full">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

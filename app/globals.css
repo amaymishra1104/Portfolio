@@ -3,8 +3,75 @@
 @tailwind utilities;
 
 :root {
-  --background: #07090e;
-  --foreground: #e6edf3;
+  /* Light Theme: Eye-Soothing Sky Blue / Air Blue Palette */
+  --bg-page-rgb: 237, 244, 250;
+  --bg-page: #EDF4FA;
+  
+  --bg-card-rgb: 255, 255, 255;
+  --bg-card: #FFFFFF;
+  
+  --bg-card-subtle-rgb: 226, 237, 248;
+  --bg-card-subtle: #E2EDF8;
+  
+  --text-main-rgb: 22, 34, 47;
+  --text-main: #16222F;
+  
+  --text-muted-rgb: 78, 97, 120;
+  --text-muted: #4E6178;
+  
+  --border-subtle-rgb: 207, 223, 238;
+  --border-subtle: #CFDFEE;
+  
+  --border-hover-rgb: 165, 196, 223;
+  --border-hover: #A5C4DF;
+  
+  --accent-sage-rgb: 42, 126, 168;
+  --accent-sage: #2A7EA8;
+  --accent-sage-light-rgb: 63, 150, 196;
+  --accent-sage-light: #3F96C4;
+  --accent-sage-hover-rgb: 31, 104, 142;
+  --accent-sage-hover: #1F688E;
+  --accent-sage-soft: rgba(42, 126, 168, 0.12);
+  
+  --accent-terracotta: #C97B63;
+  --accent-terracotta-hover: #B86B54;
+  --accent-terracotta-soft: rgba(201, 123, 99, 0.12);
+}
+
+.dark {
+  /* Dark Theme: Soft Charcoal-Green */
+  --bg-page-rgb: 23, 27, 26;
+  --bg-page: #171B1A;
+  
+  --bg-card-rgb: 31, 37, 35;
+  --bg-card: #1F2523;
+  
+  --bg-card-subtle-rgb: 25, 31, 29;
+  --bg-card-subtle: #191F1D;
+  
+  --text-main-rgb: 233, 230, 223;
+  --text-main: #E9E6DF;
+  
+  --text-muted-rgb: 154, 163, 159;
+  --text-muted: #9AA39F;
+  
+  --border-subtle-rgb: 44, 53, 50;
+  --border-subtle: #2C3532;
+  
+  --border-hover-rgb: 64, 77, 72;
+  --border-hover: #404D48;
+  
+  --accent-sage-rgb: 127, 159, 139;
+  --accent-sage: #7F9F8B;
+  --accent-sage-light-rgb: 149, 182, 161;
+  --accent-sage-light: #95B6A1;
+  --accent-sage-hover-rgb: 107, 139, 119;
+  --accent-sage-hover: #6B8B77;
+  --accent-sage-soft: rgba(127, 159, 139, 0.16);
+  
+  --accent-terracotta: #C97B63;
+  --accent-terracotta-hover: #D6876E;
+  --accent-terracotta-soft: rgba(201, 123, 99, 0.16);
 }
 
 * {
@@ -13,81 +80,79 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: #07090e;
-  color: #e6edf3;
-  color-scheme: dark;
+  scroll-padding-top: 5.5rem;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 body {
-  background-color: #07090e;
-  color: #e6edf3;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  overflow-x: hidden;
+  background-color: var(--bg-page);
+  color: var(--text-main);
   min-height: 100vh;
+  overflow-x: hidden;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
-/* Technical background grid */
-.tech-grid-bg {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+/* Subtle dot texture for hero */
+.hero-dot-pattern {
+  background-image: radial-gradient(rgba(42, 126, 168, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-.tech-grid-dense {
-  background-size: 16px 16px;
-  background-image: 
-    linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+.dark .hero-dot-pattern {
+  background-image: radial-gradient(rgba(127, 159, 139, 0.14) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* Custom technical scrollbar */
+/* Eye-soothing scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07090e;
+  background: var(--bg-page);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1b202c;
-  border-radius: 3px;
+  background: var(--border-subtle);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #10b981;
+  background: var(--accent-sage);
 }
 
 /* Selection */
 ::selection {
-  background: rgba(16, 185, 129, 0.3);
-  color: #ffffff;
+  background: rgba(42, 126, 168, 0.22);
+  color: var(--text-main);
 }
 
-/* Glassmorphism restrained border */
-.border-subtle {
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.dark ::selection {
+  background: rgba(127, 159, 139, 0.28);
+  color: var(--text-main);
 }
 
-.border-subtle-hover:hover {
-  border-color: rgba(16, 185, 129, 0.35);
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent-sage);
+  outline-offset: 2px;
 }
 
-/* Glow effects */
-.glow-emerald {
-  box-shadow: 0 0 35px -5px rgba(16, 185, 129, 0.15);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 35px -5px rgba(6, 182, 212, 0.15);
-}
-
-/* Monospace badge */
-.badge-mono {
-  font-family: var(--font-jetbrains-mono, monospace);
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
