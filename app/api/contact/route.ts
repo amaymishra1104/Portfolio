@@ -2,7 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
-const MESSAGES_FILE = path.join(process.cwd(), 'data', 'messages.json');
+import os from 'os';
+
+function getMessagesFilePath(): string {
+  try {
+    const localDir = path.join(process.cwd(), 'data');
+    if (fs.existsSync(localDir)) {
+      fs.accessSync(localDir, fs.constants.W_OK);
+      return path.join(localDir, 'messages.json');
+    }
+  } catch {
+    // Falls back to writable temp directory on serverless (e.g. Vercel)
+  }
+  return path.join(os.tmpdir(), 'portfolio_messages.json');
+}
 
 function isAuthorized(req: NextRequest): boolean {
   const adminSecret = process.env.ADMIN_INBOX_PASSCODE || 'amay2026';
@@ -13,12 +26,13 @@ function isAuthorized(req: NextRequest): boolean {
 }
 
 function getStoredMessages() {
+  const filePath = getMessagesFilePath();
   try {
-    if (!fs.existsSync(MESSAGES_FILE)) {
-      fs.writeFileSync(MESSAGES_FILE, JSON.stringify([], null, 2), 'utf-8');
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, JSON.stringify([], null, 2), 'utf-8');
       return [];
     }
-    const data = fs.readFileSync(MESSAGES_FILE, 'utf-8');
+    const data = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(data || '[]');
   } catch (error) {
     console.error('Error reading messages file:', error);
@@ -27,8 +41,9 @@ function getStoredMessages() {
 }
 
 function saveStoredMessages(messages: any[]) {
+  const filePath = getMessagesFilePath();
   try {
-    fs.writeFileSync(MESSAGES_FILE, JSON.stringify(messages, null, 2), 'utf-8');
+    fs.writeFileSync(filePath, JSON.stringify(messages, null, 2), 'utf-8');
   } catch (error) {
     console.error('Error writing messages file:', error);
   }
