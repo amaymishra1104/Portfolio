@@ -1,8 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
-import { X, FileDown, ExternalLink, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import {
+  X,
+  FileDown,
+  ExternalLink,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react';
 import { portfolioData } from '@/data/portfolio';
 
 interface ResumeModalProps {
@@ -12,25 +21,89 @@ interface ResumeModalProps {
 
 export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   const [zoomLevel, setZoomLevel] = useState<number>(100);
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+  const [canScrollDown, setCanScrollDown] = useState<boolean>(true);
+  const [canScrollUp, setCanScrollUp] = useState<boolean>(false);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const { scrollTop, scrollHeight, clientHeight } = el;
+    const maxScroll = scrollHeight - clientHeight;
+
+    if (maxScroll <= 5) {
+      setCanScrollDown(false);
+      setCanScrollUp(false);
+      setScrollProgress(100);
+      return;
+    }
+
+    const pct = Math.min(100, Math.max(0, Math.round((scrollTop / maxScroll) * 100)));
+    setScrollProgress(pct);
+    setCanScrollUp(scrollTop > 20);
+    setCanScrollDown(scrollTop < maxScroll - 20);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    // Reset zoom on open
+    // Reset zoom and scroll on open
     setZoomLevel(100);
+    setScrollProgress(0);
+    setCanScrollDown(true);
+    setCanScrollUp(false);
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      // Arrow keys and page navigation for modal scrolling
+      const el = scrollContainerRef.current;
+      if (!el) return;
+
+      if (e.key === 'ArrowDown') {
+        el.scrollBy({ top: 120, behavior: 'smooth' });
+      } else if (e.key === 'ArrowUp') {
+        el.scrollBy({ top: -120, behavior: 'smooth' });
+      } else if (e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+        e.preventDefault();
+        el.scrollBy({ top: el.clientHeight * 0.75, behavior: 'smooth' });
+      } else if (e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
+        e.preventDefault();
+        el.scrollBy({ top: -el.clientHeight * 0.75, behavior: 'smooth' });
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        el.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+      }
     };
 
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
 
+    // Initial focus and scroll check after layout
+    const timer = setTimeout(() => {
+      updateScrollState();
+      scrollContainerRef.current?.focus();
+    }, 100);
+
     return () => {
+      clearTimeout(timer);
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, updateScrollState]);
+
+  // Re-check scroll metrics when zoomLevel changes
+  useEffect(() => {
+    const timer = setTimeout(updateScrollState, 150);
+    return () => clearTimeout(timer);
+  }, [zoomLevel, updateScrollState]);
 
   if (!isOpen) return null;
 
@@ -41,6 +114,21 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
   const handleZoomOut = () => setZoomLevel((prev) => Math.max(prev - 15, 80));
   const handleResetZoom = () => setZoomLevel(100);
 
+  const handleScrollDownStep = () => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    el.scrollBy({ top: el.clientHeight * 0.6, behavior: 'smooth' });
+  };
+
+  const handleScrollToTop = () => {
+    scrollContainerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleScrollToBottom = () => {
+    const el = scrollContainerRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+  };
+
   return (
     <div
       role="dialog"
@@ -50,11 +138,11 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-5xl max-h-[96vh] flex flex-col rounded-3xl bg-[#FAFDFE] dark:bg-[#151B19] border-2 border-sage/40 dark:border-sage/50 shadow-2xl overflow-hidden text-textMain"
+        className="relative w-full max-w-5xl h-[92vh] max-h-[94vh] flex flex-col rounded-3xl bg-[#FAFDFE] dark:bg-[#151B19] border-2 border-sage/40 dark:border-sage/50 shadow-2xl overflow-hidden text-textMain"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Top Header Bar */}
-        <div className="p-4 sm:p-5 border-b border-borderSubtle flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-cardSubtle/70">
+        {/* Top Header Bar (Fixed / No Shrink) */}
+        <div className="flex-shrink-0 p-4 sm:p-5 border-b border-borderSubtle flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-cardSubtle/70">
           <div>
             <div className="inline-flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-sage animate-pulse" />
@@ -142,10 +230,30 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           </div>
         </div>
 
-        {/* Full-Document Visible Viewer (Uses All Available Space cleanly) */}
-        <div className="flex-1 w-full max-h-[78vh] overflow-y-auto bg-zinc-200/80 dark:bg-zinc-950 p-3 sm:p-6 md:p-8 flex justify-center">
+        {/* Scrollable Document Viewer Container */}
+        <div
+          ref={scrollContainerRef}
+          onScroll={updateScrollState}
+          tabIndex={0}
+          role="region"
+          aria-label="Resume document preview (scrollable)"
+          className="resume-scroll-container relative flex-1 min-h-0 w-full overflow-y-auto overscroll-contain bg-zinc-200/90 dark:bg-zinc-950 p-3 sm:p-6 md:p-8 flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-sage focus-visible:ring-inset"
+        >
+          {/* Floating 'Scroll down' pill when at top */}
+          {canScrollDown && (
+            <button
+              onClick={handleScrollDownStep}
+              type="button"
+              className="sticky top-2 z-20 self-center inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-zinc-900/90 dark:bg-zinc-800/90 text-white text-xs font-mono shadow-xl backdrop-blur-md border border-zinc-700/80 hover:border-sage hover:bg-zinc-900 transition-all cursor-pointer group animate-fade-in"
+              title="Click or scroll down with mouse wheel to see full resume"
+            >
+              <span>Scroll to view more</span>
+              <ChevronDown className="w-3.5 h-3.5 text-sage-light group-hover:translate-y-0.5 transition-transform" />
+            </button>
+          )}
+
           <div
-            className="w-full transition-all duration-200 flex justify-center"
+            className="w-full transition-all duration-200 flex justify-center py-2"
             style={{ maxWidth: `${Math.round(860 * (zoomLevel / 100))}px` }}
           >
             {/* Document Card with Clean Shadow & Border */}
@@ -161,13 +269,47 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               />
             </div>
           </div>
+
+          {/* Floating 'Back to top' button when scrolled down */}
+          {canScrollUp && (
+            <button
+              onClick={handleScrollToTop}
+              type="button"
+              className="sticky bottom-2 z-20 self-center inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-900/90 dark:bg-zinc-800/90 text-white text-xs font-mono shadow-xl backdrop-blur-md border border-zinc-700/80 hover:border-sage hover:bg-zinc-900 transition-all cursor-pointer group animate-fade-in"
+              title="Scroll back to top"
+            >
+              <ChevronUp className="w-3.5 h-3.5 text-sage-light group-hover:-translate-y-0.5 transition-transform" />
+              <span>Back to top</span>
+            </button>
+          )}
         </div>
 
-        {/* Footer info bar */}
-        <div className="px-5 py-3 border-t border-borderSubtle bg-cardSubtle/70 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-textMuted font-mono">
+        {/* Footer info bar (Fixed / No Shrink) */}
+        <div className="flex-shrink-0 px-5 py-3 border-t border-borderSubtle bg-cardSubtle/70 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-textMuted font-mono">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-sage" />
-            <span>Complete 1-page document view · Optimized for high-resolution display</span>
+            <span>
+              Scrollable document · {scrollProgress > 0 ? `${scrollProgress}% viewed` : 'Top'}
+            </span>
+            <div className="hidden sm:inline-flex items-center gap-1 ml-2 text-[11px] text-textMuted/80">
+              <span>(Use mouse wheel, trackpad, or</span>
+              <button
+                onClick={handleScrollToTop}
+                className="hover:text-sage underline cursor-pointer"
+                type="button"
+              >
+                Top
+              </button>
+              <span>/</span>
+              <button
+                onClick={handleScrollToBottom}
+                className="hover:text-sage underline cursor-pointer"
+                type="button"
+              >
+                Bottom
+              </button>
+              <span>)</span>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">

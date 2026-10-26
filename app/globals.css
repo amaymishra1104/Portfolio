@@ -124,6 +124,42 @@ body {
   background: var(--accent-sage);
 }
 
+/* Dedicated Resume Viewer Scrollbar */
+.resume-scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(42, 126, 168, 0.7) rgba(0, 0, 0, 0.08);
+}
+.resume-scroll-container::-webkit-scrollbar {
+  width: 10px;
+}
+.resume-scroll-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  margin: 6px 0;
+}
+.resume-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(42, 126, 168, 0.7);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.resume-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(42, 126, 168, 1);
+}
+
+.dark .resume-scroll-container {
+  scrollbar-color: rgba(127, 159, 139, 0.7) rgba(255, 255, 255, 0.08);
+}
+.dark .resume-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+}
+.dark .resume-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(127, 159, 139, 0.7);
+}
+.dark .resume-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(149, 182, 161, 1);
+}
+
 /* Selection */
 ::selection {
   background: rgba(42, 126, 168, 0.22);
