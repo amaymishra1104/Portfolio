@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, FileDown, ExternalLink } from 'lucide-react';
 import { portfolioData } from '@/data/portfolio';
 import { Metadata } from 'next';
@@ -10,12 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default function ResumePage() {
-  const resumePath = portfolioData.personal.resumePath;
+  const resumePdfPath = portfolioData.personal.resumePath;
+  const resumeImgPath = '/Amay_Mishra_Resume.png';
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-6">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-6">
       {/* Top Navigation */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 font-mono text-xs text-textMuted hover:text-sage transition-colors"
@@ -24,9 +26,9 @@ export default function ResumePage() {
           <span>BACK TO PORTFOLIO</span>
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <a
-            href={resumePath}
+            href={resumePdfPath}
             download="Amay_Mishra_Resume.pdf"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-terracotta hover:bg-terracotta-hover transition-colors shadow-sm"
           >
@@ -35,7 +37,7 @@ export default function ResumePage() {
           </a>
 
           <a
-            href={resumePath}
+            href={resumePdfPath}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-zinc-700 hover:border-sage shadow-md transition-all"
@@ -48,7 +50,7 @@ export default function ResumePage() {
 
       {/* Header */}
       <div className="space-y-1 pb-4 border-b border-borderSubtle">
-        <h1 className="font-serif text-3xl sm:text-4xl text-textMain tracking-tight">
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-textMain tracking-tight">
           Amay Mishra — Resume
         </h1>
         <p className="text-xs sm:text-sm text-textMuted font-mono">
@@ -56,25 +58,31 @@ export default function ResumePage() {
         </p>
       </div>
 
-      {/* PDF Container */}
-      <div className="w-full h-[80vh] rounded-2xl overflow-hidden border border-borderSubtle shadow-soft bg-[#323639]">
-        <iframe
-          src={`${resumePath}#toolbar=1&navpanes=0`}
-          className="w-full h-full border-0"
-          title="Amay Mishra Resume"
-        />
+      {/* Full Document View */}
+      <div className="w-full flex justify-center bg-zinc-200/80 dark:bg-zinc-950 p-4 sm:p-8 rounded-3xl border border-borderSubtle shadow-soft">
+        <div className="w-full max-w-[850px] bg-white rounded-xl shadow-2xl overflow-hidden border border-zinc-300 dark:border-zinc-800 ring-1 ring-black/5">
+          <Image
+            src={resumeImgPath}
+            alt="Amay Mishra Resume — AI/ML Engineer & Software Engineer"
+            width={1836}
+            height={2376}
+            priority
+            unoptimized
+            className="w-full h-auto block select-text"
+          />
+        </div>
       </div>
 
-      {/* Fallback & Direct Download Line */}
+      {/* Direct Download Line */}
       <div className="p-4 rounded-xl bg-card border border-borderSubtle flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-textMuted font-mono">
-        <span>Can&apos;t see the PDF preview in your browser?</span>
+        <span>Need the vector PDF file for job portals or ATS scanners?</span>
         <a
-          href={resumePath}
+          href={resumePdfPath}
           download="Amay_Mishra_Resume.pdf"
-          className="text-terracotta hover:underline font-medium inline-flex items-center gap-1.5"
+          className="text-terracotta hover:underline font-semibold inline-flex items-center gap-1.5"
         >
           <FileDown className="w-4 h-4" />
-          <span>Click here to download Amay_Mishra_Resume.pdf directly</span>
+          <span>Download Amay_Mishra_Resume.pdf directly</span>
         </a>
       </div>
     </div>
