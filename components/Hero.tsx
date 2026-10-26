@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { portfolioData } from '@/data/portfolio';
 import { ArrowRight, FileDown, Github, Linkedin, Mail, ExternalLink } from 'lucide-react';
+import ResumeModal from './ResumeModal';
 
 // Custom Kaggle icon SVG since lucide doesn't have Kaggle
 function KaggleIcon({ className = 'w-4 h-4' }: { className?: string }) {
@@ -21,6 +22,7 @@ function KaggleIcon({ className = 'w-4 h-4' }: { className?: string }) {
 
 export default function Hero() {
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
+  const [resumeModalOpen, setResumeModalOpen] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -82,15 +84,15 @@ export default function Hero() {
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
 
-              <a
-                href={portfolioData.personal.resumePath}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => setResumeModalOpen(true)}
+                type="button"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-textMain bg-card border border-borderSubtle hover:border-borderHover hover:bg-cardSubtle transition-all duration-200 shadow-soft"
+                title="Open resume viewer with download option"
               >
                 <FileDown className="w-4 h-4 text-terracotta" />
-                <span>Download Resume</span>
-              </a>
+                <span>View &amp; Download Resume</span>
+              </button>
             </div>
 
             {/* Social Links & Recruiter Quick Contact */}
@@ -102,15 +104,21 @@ export default function Hero() {
                 if (social.icon === 'kaggle') iconEl = <KaggleIcon className="w-4 h-4" />;
                 if (social.icon === 'email') iconEl = <Mail className="w-4 h-4" />;
 
+                // Directly open Gmail compose for email icon
+                const targetUrl =
+                  social.icon === 'email'
+                    ? 'https://mail.google.com/mail/?view=cm&fs=1&to=amaymishra1104@gmail.com&su=Inquiry%20from%20Portfolio'
+                    : social.url;
+
                 return (
                   <a
                     key={social.name}
-                    href={social.url}
-                    target={social.icon === 'email' ? '_self' : '_blank'}
+                    href={targetUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-xl bg-card border border-borderSubtle flex items-center justify-center text-textMuted hover:text-textMain hover:border-sage hover:bg-cardSubtle transition-all duration-200 shadow-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-sage"
                     aria-label={`Connect on ${social.name}`}
-                    title={social.label}
+                    title={social.icon === 'email' ? 'Compose email in Gmail directly' : social.label}
                   >
                     {iconEl}
                   </a>
@@ -153,6 +161,11 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      <ResumeModal
+        isOpen={resumeModalOpen}
+        onClose={() => setResumeModalOpen(false)}
+      />
     </section>
   );
 }

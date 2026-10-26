@@ -150,7 +150,7 @@ export const portfolioData: PortfolioData = {
     },
     {
       name: 'Email',
-      url: 'mailto:amaymishra1104@gmail.com',
+      url: 'https://mail.google.com/mail/?view=cm&fs=1&to=amaymishra1104@gmail.com&su=Inquiry%20from%20Portfolio',
       label: 'amaymishra1104@gmail.com',
       icon: 'email',
     },
