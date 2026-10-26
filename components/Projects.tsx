@@ -7,7 +7,7 @@ import ProjectModal from './ProjectModal';
 import { ExternalLink, Github, Layers, ArrowUpRight, ShieldAlert, Sparkles } from 'lucide-react';
 
 export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState<FeaturedProject | null>(null);
+  const [selectedProject, setSelectedProject] = useState<FeaturedProject | SmallerProject | null>(null);
 
   return (
     <section id="projects" className="py-16 md:py-24 border-t border-borderSubtle">
@@ -72,9 +72,9 @@ export default function Projects() {
                     />
 
                     {/* Subtle Overlay Badge on Hover */}
-                    <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] opacity-0 group-hover/frame:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-medium">
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover/frame:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white text-xs font-medium">
                       <Layers className="w-4 h-4 text-sage-light" />
-                      <span>View Architecture Details</span>
+                      <span>View Architecture Breakdown</span>
                     </div>
 
                     {/* Disclaimer badge for DateMind AI */}
@@ -100,10 +100,10 @@ export default function Projects() {
                       <button
                         onClick={() => setSelectedProject(project)}
                         type="button"
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-cardSubtle border border-borderSubtle text-[11px] font-mono text-textMuted hover:text-textMain hover:border-sage transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cardSubtle border border-borderSubtle text-xs font-mono text-textMain hover:border-sage hover:text-sage hover:bg-card transition-all duration-200 shadow-sm"
                         aria-label={`View architecture details for ${project.title}`}
                       >
-                        <Layers className="w-3 h-3 text-sage" />
+                        <Layers className="w-3.5 h-3.5 text-sage" />
                         <span>Architecture</span>
                       </button>
                     </div>
@@ -211,7 +211,10 @@ export default function Projects() {
                   {/* Card Content */}
                   <div className="p-5 space-y-3">
                     <div className="flex items-center justify-between gap-2">
-                      <h4 className="font-serif text-lg font-medium text-textMain group-hover:text-terracotta transition-colors">
+                      <h4
+                        onClick={() => setSelectedProject(p)}
+                        className="font-serif text-lg font-medium text-textMain group-hover:text-terracotta transition-colors cursor-pointer"
+                      >
                         {p.title}
                       </h4>
                       {p.isPlaceholder && (
@@ -241,8 +244,18 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* Footer Link / Placeholder */}
-                <div className="p-5 pt-3 border-t border-borderSubtle/60 flex items-center justify-between">
+                {/* Footer Link / Architecture Action */}
+                <div className="p-5 pt-3 border-t border-borderSubtle/60 flex items-center justify-between gap-2">
+                  <button
+                    onClick={() => setSelectedProject(p)}
+                    type="button"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-card border border-borderSubtle text-xs font-mono text-textMuted hover:text-textMain hover:border-sage hover:bg-cardSubtle transition-all duration-200 shadow-sm"
+                    aria-label={`View architecture details for ${p.title}`}
+                  >
+                    <Layers className="w-3.5 h-3.5 text-sage" />
+                    <span>Architecture</span>
+                  </button>
+
                   {p.repoUrl ? (
                     <a
                       href={p.repoUrl}
@@ -251,7 +264,7 @@ export default function Projects() {
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cardSubtle border border-borderSubtle text-xs font-mono text-textMain hover:border-sage hover:text-sage hover:bg-card transition-all duration-200 shadow-sm group/btn"
                     >
                       <Github className="w-3.5 h-3.5 text-sage" />
-                      <span>View Repository</span>
+                      <span>View Repo</span>
                       <ArrowUpRight className="w-3 h-3 opacity-60 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                     </a>
                   ) : (
