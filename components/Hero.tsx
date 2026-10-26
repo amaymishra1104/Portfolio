@@ -138,24 +138,16 @@ export default function Hero() {
             <div className="absolute w-68 h-68 sm:w-76 sm:h-76 rounded-full border border-borderSubtle/30 pointer-events-none" />
 
             {/* Monogram Medallion */}
-            <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-3xl bg-card border border-borderSubtle flex flex-col items-center justify-center shadow-soft-dark/10 p-6 transition-all duration-300 hover:border-sage group">
+            <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-3xl bg-card border border-borderSubtle flex items-center justify-center shadow-soft-dark/10 p-6 transition-all duration-300 hover:border-sage group">
               {/* Inner Decorative Corner Accents */}
               <div className="absolute top-3 left-3 w-2 h-2 border-t border-l border-sage/60 rounded-tl-sm" />
               <div className="absolute top-3 right-3 w-2 h-2 border-t border-r border-terracotta/60 rounded-tr-sm" />
               <div className="absolute bottom-3 left-3 w-2 h-2 border-b border-l border-terracotta/60 rounded-bl-sm" />
               <div className="absolute bottom-3 right-3 w-2 h-2 border-b border-r border-sage/60 rounded-br-sm" />
 
-              {/* Decorative Subtle Dot */}
-              <div className="w-1.5 h-1.5 rounded-full bg-terracotta mb-2 opacity-80" />
-
               {/* Big Refined Monogram */}
               <span className="font-serif text-5xl sm:text-6xl font-bold tracking-widest text-textMain group-hover:text-terracotta transition-colors duration-300">
                 AM
-              </span>
-
-              {/* Minimal Monospace Sub-text */}
-              <span className="font-mono text-[11px] uppercase tracking-widest text-textMuted mt-2">
-                Portfolio · 2026
               </span>
             </div>
           </div>
