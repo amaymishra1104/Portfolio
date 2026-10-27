@@ -40,7 +40,7 @@ export default function Hero() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-sage/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-content mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-12 lg:gap-16">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
           {/* Left Column: Content */}
           <div className="flex-1 text-center lg:text-left space-y-6">
             {/* Availability Badge */}
@@ -131,24 +131,28 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Column: Stylized Monogram Avatar (No Photo) */}
-          <div className="relative flex items-center justify-center">
-            {/* Concentric Soft Rings */}
-            <div className="absolute w-56 h-56 sm:w-64 sm:h-64 rounded-full border border-borderSubtle/60 pointer-events-none" />
-            <div className="absolute w-68 h-68 sm:w-76 sm:h-76 rounded-full border border-borderSubtle/30 pointer-events-none" />
-
-            {/* Monogram Medallion */}
-            <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-3xl bg-card border border-borderSubtle flex items-center justify-center shadow-soft-dark/10 p-6 transition-all duration-300 hover:border-sage group">
-              {/* Inner Decorative Corner Accents */}
-              <div className="absolute top-3 left-3 w-2 h-2 border-t border-l border-sage/60 rounded-tl-sm" />
-              <div className="absolute top-3 right-3 w-2 h-2 border-t border-r border-terracotta/60 rounded-tr-sm" />
-              <div className="absolute bottom-3 left-3 w-2 h-2 border-b border-l border-terracotta/60 rounded-bl-sm" />
-              <div className="absolute bottom-3 right-3 w-2 h-2 border-b border-r border-sage/60 rounded-br-sm" />
-
-              {/* Big Refined Monogram */}
-              <span className="font-serif text-5xl sm:text-6xl font-bold tracking-widest text-textMain group-hover:text-terracotta transition-colors duration-300">
-                AM
+          {/* Right Column: Open Minimalist Statement */}
+          <div className="w-full lg:w-auto lg:max-w-md xl:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left select-none">
+            {/* Minimal Accent: Glowing Beacon Dot with Hairline Accent */}
+            <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-sage" />
               </span>
+              <span className="h-px w-10 sm:w-14 bg-borderSubtle" />
+            </div>
+
+            {/* Three Stacked Statement Lines */}
+            <div className="space-y-2 sm:space-y-3 font-serif">
+              <p className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-normal tracking-tight text-textMain leading-[1.12] transition-colors duration-300 hover:text-sage animate-fade-in-up">
+                Less talking.
+              </p>
+              <p className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-normal tracking-tight text-textMain leading-[1.12] transition-colors duration-300 hover:text-sage animate-fade-in-up [animation-delay:120ms]">
+                More building.
+              </p>
+              <p className="text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-normal tracking-tight text-textMuted leading-[1.16] pt-1 sm:pt-2 transition-colors duration-300 hover:text-textMain animate-fade-in-up [animation-delay:240ms]">
+                Always iterating.
+              </p>
             </div>
           </div>
         </div>

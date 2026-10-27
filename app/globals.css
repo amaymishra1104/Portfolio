@@ -105,6 +105,35 @@ body {
   background-size: 24px 24px;
 }
 
+/* Subtle entrance animations */
+@keyframes heroFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFadeInSimple {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: heroFadeInSimple 0.3s ease-out both;
+}
+
+.animate-fade-in-up {
+  animation: heroFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* Eye-soothing scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
