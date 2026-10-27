@@ -132,25 +132,25 @@ export default function Hero() {
           </div>
 
           {/* Right Column: Open Minimalist Statement */}
-          <div className="w-full lg:w-auto lg:max-w-md xl:max-w-lg flex flex-col items-center lg:items-start text-center lg:text-left select-none">
+          <div className="w-full lg:w-auto lg:max-w-md xl:max-w-xl flex flex-col items-center lg:items-start text-center lg:text-left select-none -translate-y-2 lg:-translate-y-7 lg:translate-x-6 xl:translate-x-12">
             {/* Minimal Accent: Glowing Beacon Dot with Hairline Accent */}
             <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-sage" />
               </span>
-              <span className="h-px w-10 sm:w-14 bg-borderSubtle" />
+              <span className="h-px w-10 sm:w-16 bg-gradient-to-r from-sage/50 via-borderSubtle to-transparent" />
             </div>
 
             {/* Three Stacked Statement Lines */}
             <div className="space-y-2 sm:space-y-3 font-serif">
-              <p className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-normal tracking-tight text-textMain leading-[1.12] transition-colors duration-300 hover:text-sage animate-fade-in-up">
+              <p className="text-4xl sm:text-5xl lg:text-[54px] xl:text-[62px] font-normal tracking-tight text-textMain leading-[1.08] transition-all duration-300 hover:translate-x-1.5 hover:text-sage cursor-default animate-ethos-1">
                 Less talking.
               </p>
-              <p className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[52px] font-normal tracking-tight text-textMain leading-[1.12] transition-colors duration-300 hover:text-sage animate-fade-in-up [animation-delay:120ms]">
+              <p className="text-4xl sm:text-5xl lg:text-[54px] xl:text-[62px] font-normal tracking-tight text-textMain leading-[1.08] transition-all duration-300 hover:translate-x-1.5 hover:text-sage cursor-default animate-ethos-2">
                 More building.
               </p>
-              <p className="text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-normal tracking-tight text-textMuted leading-[1.16] pt-1 sm:pt-2 transition-colors duration-300 hover:text-textMain animate-fade-in-up [animation-delay:240ms]">
+              <p className="text-2xl sm:text-3xl lg:text-[32px] xl:text-[36px] font-normal tracking-tight text-textMuted leading-[1.18] pt-2 sm:pt-3 transition-all duration-300 hover:translate-x-1.5 hover:text-textMain cursor-default animate-ethos-3">
                 Always iterating.
               </p>
             </div>
