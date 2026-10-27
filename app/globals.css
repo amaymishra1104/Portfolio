@@ -146,6 +146,24 @@ body {
   animation: heroFadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
 }
 
+/* Gentle interactive floating wave */
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-gentle-float {
+  animation: gentleFloat 6s ease-in-out infinite;
+}
+
+.animate-gentle-float:hover {
+  animation-play-state: paused;
+}
+
 /* Eye-soothing scrollbar */
 ::-webkit-scrollbar {
   width: 7px;

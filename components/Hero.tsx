@@ -23,6 +23,7 @@ function KaggleIcon({ className = 'w-4 h-4' }: { className?: string }) {
 export default function Hero() {
   const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
+  const [hoveredEthosIndex, setHoveredEthosIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -40,9 +41,9 @@ export default function Hero() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-sage/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-content mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
+        <div className="flex flex-col md:flex-row md:items-start lg:items-center justify-between gap-10 md:gap-12 lg:gap-16">
           {/* Left Column: Content */}
-          <div className="flex-1 text-center lg:text-left space-y-6">
+          <div className="flex-1 text-center md:text-left space-y-6">
             {/* Availability Badge */}
             <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-card border border-borderSubtle text-xs font-mono text-textMuted shadow-soft">
               <span className="relative flex h-2 w-2">
@@ -59,7 +60,7 @@ export default function Hero() {
               </h1>
 
               {/* Rotating Subtitle with subtle transition */}
-              <div className="h-8 flex items-center justify-center lg:justify-start overflow-hidden">
+              <div className="h-8 flex items-center justify-center md:justify-start overflow-hidden">
                 <span
                   key={currentTitleIndex}
                   className="font-mono text-sm sm:text-base text-sage font-medium tracking-wide animate-fade-in transition-all duration-300"
@@ -75,7 +76,7 @@ export default function Hero() {
             </p>
 
             {/* Call to Actions */}
-            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4">
+            <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4">
               <a
                 href="#projects"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white bg-terracotta hover:bg-terracotta-hover transition-all duration-200 shadow-sm group"
@@ -96,7 +97,7 @@ export default function Hero() {
             </div>
 
             {/* Social Links & Recruiter Quick Contact */}
-            <div className="pt-4 flex items-center justify-center lg:justify-start gap-3 text-textMuted">
+            <div className="pt-4 flex items-center justify-center md:justify-start gap-3 text-textMuted">
               {portfolioData.socials.map((social) => {
                 let iconEl = <ExternalLink className="w-4 h-4" />;
                 if (social.icon === 'github') iconEl = <Github className="w-4 h-4" />;
@@ -131,28 +132,90 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right Column: Open Minimalist Statement */}
-          <div className="w-full lg:w-auto lg:max-w-md xl:max-w-xl flex flex-col items-center lg:items-start text-center lg:text-left select-none -translate-y-2 lg:-translate-y-7 lg:translate-x-6 xl:translate-x-12">
-            {/* Minimal Accent: Glowing Beacon Dot with Hairline Accent */}
-            <div className="flex items-center gap-2.5 mb-5 sm:mb-6">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-sage" />
-              </span>
-              <span className="h-px w-10 sm:w-16 bg-gradient-to-r from-sage/50 via-borderSubtle to-transparent" />
+          {/* Right Column: Shifted Right & Up with Interactive Focus Animations */}
+          <div className="relative w-full md:w-auto lg:ml-auto flex flex-col items-center md:items-start text-center md:text-left select-none -translate-y-3 md:-translate-y-6 lg:-translate-y-12 lg:translate-x-10 xl:translate-x-20">
+            {/* Ambient Reactive Glow */}
+            <div className="absolute -inset-6 bg-gradient-to-tr from-sage/15 via-terracotta/10 to-transparent rounded-full blur-2xl opacity-40 hover:opacity-80 transition-opacity duration-700 pointer-events-none" />
+
+            {/* Interactive Telemetry Indicator */}
+            <div className="relative flex items-center justify-center md:justify-start gap-2.5 mb-5 sm:mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/75 border border-borderSubtle text-xs font-mono text-textMuted shadow-soft backdrop-blur-sm transition-all duration-300 hover:border-sage/60 hover:bg-card cursor-default">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-sage" />
+                </span>
+                <span className="tracking-wider uppercase text-[10px]">Build Philosophy</span>
+              </div>
+              <span className="hidden sm:inline-block h-px w-10 sm:w-14 bg-gradient-to-r from-borderSubtle via-sage/40 to-transparent" />
             </div>
 
-            {/* Three Stacked Statement Lines */}
-            <div className="space-y-2 sm:space-y-3 font-serif">
-              <p className="text-4xl sm:text-5xl lg:text-[54px] xl:text-[62px] font-normal tracking-tight text-textMain leading-[1.08] transition-all duration-300 hover:translate-x-1.5 hover:text-sage cursor-default animate-ethos-1">
-                Less talking.
-              </p>
-              <p className="text-4xl sm:text-5xl lg:text-[54px] xl:text-[62px] font-normal tracking-tight text-textMain leading-[1.08] transition-all duration-300 hover:translate-x-1.5 hover:text-sage cursor-default animate-ethos-2">
-                More building.
-              </p>
-              <p className="text-2xl sm:text-3xl lg:text-[32px] xl:text-[36px] font-normal tracking-tight text-textMuted leading-[1.18] pt-2 sm:pt-3 transition-all duration-300 hover:translate-x-1.5 hover:text-textMain cursor-default animate-ethos-3">
-                Always iterating.
-              </p>
+            {/* Three Stacked Statement Lines with Dynamic Hover Focus */}
+            <div
+              className="relative space-y-2 sm:space-y-3 font-serif animate-gentle-float"
+              onMouseLeave={() => setHoveredEthosIndex(null)}
+            >
+              {/* Line 1: Less talking. */}
+              <div
+                onMouseEnter={() => setHoveredEthosIndex(0)}
+                className={`group flex items-center justify-center md:justify-start gap-2.5 cursor-pointer transition-all duration-300 ${
+                  hoveredEthosIndex !== null && hoveredEthosIndex !== 0
+                    ? 'opacity-35 scale-[0.99]'
+                    : 'opacity-100 scale-100'
+                }`}
+              >
+                <span
+                  className={`inline-block w-2.5 h-2.5 rounded-full bg-sage transition-all duration-300 ${
+                    hoveredEthosIndex === 0
+                      ? 'scale-100 opacity-100 shadow-[0_0_10px_rgb(var(--accent-sage-rgb))]'
+                      : 'scale-0 opacity-0 -mr-2.5'
+                  }`}
+                />
+                <p className="text-[38px] sm:text-[48px] lg:text-[58px] xl:text-[66px] font-medium tracking-tight text-textMain leading-[1.05] transition-all duration-300 group-hover:text-sage group-hover:translate-x-1.5 animate-ethos-1">
+                  Less talking.
+                </p>
+              </div>
+
+              {/* Line 2: More building. */}
+              <div
+                onMouseEnter={() => setHoveredEthosIndex(1)}
+                className={`group flex items-center justify-center md:justify-start gap-2.5 cursor-pointer transition-all duration-300 ${
+                  hoveredEthosIndex !== null && hoveredEthosIndex !== 1
+                    ? 'opacity-35 scale-[0.99]'
+                    : 'opacity-100 scale-100'
+                }`}
+              >
+                <span
+                  className={`inline-block w-2.5 h-2.5 rounded-full bg-sage transition-all duration-300 ${
+                    hoveredEthosIndex === 1
+                      ? 'scale-100 opacity-100 shadow-[0_0_10px_rgb(var(--accent-sage-rgb))]'
+                      : 'scale-0 opacity-0 -mr-2.5'
+                  }`}
+                />
+                <p className="text-[38px] sm:text-[48px] lg:text-[58px] xl:text-[66px] font-medium tracking-tight text-textMain leading-[1.05] transition-all duration-300 group-hover:text-sage group-hover:translate-x-1.5 animate-ethos-2">
+                  More building.
+                </p>
+              </div>
+
+              {/* Line 3: Always iterating. */}
+              <div
+                onMouseEnter={() => setHoveredEthosIndex(2)}
+                className={`group flex items-center justify-center md:justify-start gap-2 cursor-pointer pt-2 sm:pt-3 transition-all duration-300 ${
+                  hoveredEthosIndex !== null && hoveredEthosIndex !== 2
+                    ? 'opacity-35 scale-[0.99]'
+                    : 'opacity-100 scale-100'
+                }`}
+              >
+                <span
+                  className={`inline-block w-2 h-2 rounded-full bg-terracotta transition-all duration-300 ${
+                    hoveredEthosIndex === 2
+                      ? 'scale-100 opacity-100 shadow-[0_0_8px_#C97B63]'
+                      : 'scale-0 opacity-0 -mr-2'
+                  }`}
+                />
+                <p className="text-[20px] sm:text-[24px] lg:text-[28px] xl:text-[32px] font-normal tracking-tight text-textMuted leading-[1.2] transition-all duration-300 group-hover:text-textMain group-hover:translate-x-1.5 animate-ethos-3">
+                  Always iterating.
+                </p>
+              </div>
             </div>
           </div>
         </div>
