@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import { useScroll } from 'framer-motion';
 import Overlay from './Overlay';
 
@@ -16,29 +16,7 @@ export default function ScrollyCanvas() {
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const frameCount = 90; // Approx 89 frames + 0
 
-  // Preload images for high performance
-  useEffect(() => {
-    const loadedImages: HTMLImageElement[] = [];
-    let loadedCount = 0;
-    
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      const indexStr = i.toString().padStart(2, '0');
-      img.src = `/sequence/frame_${indexStr}_delay-0.067s.webp`;
-      
-      img.onload = () => {
-        loadedCount++;
-        // Render the very first frame to prevent white flash
-        if (i === 0) {
-          renderFrame(0, [img]);
-        }
-      };
-      loadedImages.push(img);
-    }
-    setImages(loadedImages);
-  }, []);
-
-  const renderFrame = (index: number, imgArray = images) => {
+  const renderFrame = useCallback((index: number, imgArray = images) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -65,7 +43,27 @@ export default function ScrollyCanvas() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-  };
+  }, [images]);
+
+  // Preload images for high performance
+  useEffect(() => {
+    const loadedImages: HTMLImageElement[] = [];
+    
+    for (let i = 0; i < frameCount; i++) {
+      const img = new Image();
+      const indexStr = i.toString().padStart(2, '0');
+      img.src = `/sequence/frame_${indexStr}_delay-0.067s.webp`;
+      
+      img.onload = () => {
+        // Render the very first frame to prevent white flash
+        if (i === 0) {
+          renderFrame(0, [img]);
+        }
+      };
+      loadedImages.push(img);
+    }
+    setImages(loadedImages);
+  }, [renderFrame]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -81,7 +79,7 @@ export default function ScrollyCanvas() {
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [images]);
+  }, [renderFrame, scrollYProgress]);
 
   useEffect(() => {
     // Map scroll progress (0 to 1) to image index
@@ -95,7 +93,7 @@ export default function ScrollyCanvas() {
     });
     
     return () => unsubscribe();
-  }, [images]);
+  }, [renderFrame, scrollYProgress]);
 
   return (
     <div ref={containerRef} className="relative h-[500vh] w-full bg-[#121212]">
