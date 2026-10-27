@@ -137,18 +137,6 @@ export default function Hero() {
             {/* Ambient Reactive Glow */}
             <div className="absolute -inset-6 bg-gradient-to-tr from-sage/15 via-terracotta/10 to-transparent rounded-full blur-2xl opacity-40 hover:opacity-80 transition-opacity duration-700 pointer-events-none" />
 
-            {/* Interactive Telemetry Indicator */}
-            <div className="relative flex items-center justify-center md:justify-start gap-2.5 mb-5 sm:mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-card/75 border border-borderSubtle text-xs font-mono text-textMuted shadow-soft backdrop-blur-sm transition-all duration-300 hover:border-sage/60 hover:bg-card cursor-default">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sage opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-sage" />
-                </span>
-                <span className="tracking-wider uppercase text-[10px]">Build Philosophy</span>
-              </div>
-              <span className="hidden sm:inline-block h-px w-10 sm:w-14 bg-gradient-to-r from-borderSubtle via-sage/40 to-transparent" />
-            </div>
-
             {/* Three Stacked Statement Lines with Dynamic Hover Focus */}
             <div
               className="relative space-y-2 sm:space-y-3 font-serif animate-gentle-float"
